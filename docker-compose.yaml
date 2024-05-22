@@ -1,0 +1,36 @@
+version: "3.7"
+name: "skiller-whale-react-native"
+services:
+  sync:
+    image: "ghcr.io/skiller-whale/learnersync:0.2.1"
+    network_mode: "host"
+    environment:
+      SERVER_URL: "https://train.skillerwhale.com/"
+      SW_RUNNING_IN_HOSTED_ENV:
+      WATCHER_BASE_PATH: "/app/exercises"
+      ATTENDANCE_ID_FILE: "/app/sync/attendance_id"
+      WATCHED_EXTS: ".js .jsx .ts .tsx"
+      IGNORE_DIRS: ".git"
+    volumes:
+      - "./src_js:/app/exercises/src_js:ro"
+      - "./src_ts:/app/exercises/src_ts:ro"
+      - "./attendance_id:/app/sync/attendance_id:ro"
+    tty: true
+    stdin_open: true
+  dev-server:
+    container_name: "skiller-whale-react-native-dev" # needed for running in Dev Containers in VSCode
+    build:
+      context: "."
+      dockerfile: "Dockerfile"
+    environment:
+      WINDIR: "$WINDIR" # used to determine whether the host is Windows or not
+      PREVIEW_HOST: "0.0.0.0" # used to determine whether learner is using docker or not
+    ports:
+      - "8081:8081"
+    volumes:
+      - "./node_modules:/app/exercises/node_modules" # mounted so that we can use the host's node_modules when developing outside the container
+      - "./assets:/app/exercises/assets:ro"
+      - "./lib:/app/exercises/lib:ro"
+      - "./src_app:/app/exercises/src_app:ro"
+      - "./src_js:/app/exercises/src_js"
+      - "./src_ts:/app/exercises/src_ts"
