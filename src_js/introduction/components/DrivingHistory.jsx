@@ -1,10 +1,9 @@
 import { FlatList, View } from "react-native";
 import { styles } from "../../../lib/styles.ts";
 import { StyledText as Text } from "../../../lib/typography.tsx";
-import TripRow from "./TripRow.tsx";
-import type { BaseTabScreenProps } from "../routes.ts";
+import TripRow from "./TripRow.jsx";
 
-const DrivingHistory = ({ route }: BaseTabScreenProps<"DrivingHistory">) => {
+const DrivingHistory = ({ route }) => {
   const { trips } = route.params;
 
   return (
