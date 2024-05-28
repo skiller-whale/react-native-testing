@@ -4,8 +4,7 @@ import { StyledText as Text } from "../../../lib/typography.tsx";
 import { calculateDrivingAssessment } from "../calculations.js";
 import { DrivingLevelDisplay } from "../constants.js";
 
-const DrivingAssessment = ({ route }) => {
-  const { trips } = route.params;
+const DrivingAssessment = ({ trips }) => {
   const {
     drivingScore,
     drivingLevel,

@@ -1,73 +1,81 @@
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { NavigationContainer } from "@react-navigation/native";
 import { useState } from "react";
-import { useAsyncEffect } from "use-async-effect";
-import fetch, { type Trip } from "../../lib/dummyApi.ts";
-import { colors } from "../../lib/styles.ts";
+import { Pressable, ScrollView, StyleSheet, View } from "react-native";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { colors, fontSizes, spacing, styles } from "../../lib/styles.ts";
 import { StyledText as Text } from "../../lib/typography.tsx";
+import { ModuleStackScreenProps } from "../../src_app/routes.ts";
 import DrivingAssessment from "./components/DrivingAssessment.tsx";
 import DrivingHistory from "./components/DrivingHistory.tsx";
-import { BaseTabID, type BaseTabScreenParams } from "./routes.ts";
 
-const Tab = createBottomTabNavigator<BaseTabScreenParams>();
+const App = ({ route }: ModuleStackScreenProps<"/ts/introduction">) => {
+  const { trips } = route.params;
 
-const App = () => {
-  const [loadingTrips, setLoadingTrips] = useState(true);
-  const [trips, setTrips] = useState<Trip[]>([]);
+  const [tab, setTab] = useState<"assessment" | "history">("assessment");
 
-  useAsyncEffect(async () => {
-    const response = await fetch("https://dummyapi.skillerwhale/trips");
-    const { data: trips } = await response.json();
-    setLoadingTrips(false);
-    setTrips(trips);
-  }, []);
-
-  return loadingTrips ? (
-    <Text>Loading...</Text>
-  ) : (
-    <NavigationContainer independent={true}>
-      <Tab.Navigator
-        id={BaseTabID}
-        initialRouteName="DrivingAssessment"
-        screenOptions={{
-          headerStyle: { backgroundColor: colors.orcaBlue },
-          headerTintColor: colors.white,
-          tabBarInactiveBackgroundColor: colors.lightGrey,
-          tabBarInactiveTintColor: colors.coralOrange,
-          tabBarActiveBackgroundColor: colors.orcaBlue,
-          tabBarActiveTintColor: colors.white,
-        }}
-      >
-        <Tab.Screen
-          name="DrivingAssessment"
-          component={DrivingAssessment}
-          initialParams={{ trips }}
-          options={{
-            title: "Assessment",
-            tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons name="car" color={color} size={size} />
-            ),
-          }}
-        />
-        <Tab.Screen
-          name="DrivingHistory"
-          component={DrivingHistory}
-          initialParams={{ trips }}
-          options={{
-            title: "Your Trips",
-            tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons
-                name="car-clock"
-                color={color}
-                size={size}
-              />
-            ),
-          }}
-        />
-      </Tab.Navigator>
-    </NavigationContainer>
+  return (
+    <View style={styles.container}>
+      <Text role="heading" aria-level={1} style={appStyles.headerTitle}>
+        {tab === "assessment" ? "Overall Assessment" : "Your Trips"}
+      </Text>
+      <ScrollView style={styles.container}>
+        {tab === "assessment" ? (
+          <DrivingAssessment trips={trips} />
+        ) : (
+          <DrivingHistory trips={trips} />
+        )}
+      </ScrollView>
+      <View style={appStyles.tabs}>
+        <Pressable
+          role="link"
+          aria-label="Overall Assessment"
+          style={[appStyles.tab, tab === "assessment" && appStyles.activeTab]}
+          onPress={() => setTab("assessment")}
+        >
+          <MaterialCommunityIcons
+            name="car"
+            size={32}
+            color={tab === "assessment" ? colors.white : colors.coralOrange}
+          />
+        </Pressable>
+        <Pressable
+          role="link"
+          aria-label="Your Trips"
+          style={[appStyles.tab, tab === "history" && appStyles.activeTab]}
+          onPress={() => setTab("history")}
+        >
+          <MaterialCommunityIcons
+            name="car-clock"
+            size={32}
+            color={tab === "history" ? colors.white : colors.coralOrange}
+          />
+        </Pressable>
+      </View>
+    </View>
   );
 };
+
+const appStyles = StyleSheet.create({
+  headerTitle: {
+    backgroundColor: colors.orcaBlue,
+    padding: spacing.md,
+    color: colors.white,
+    fontSize: fontSizes.lg,
+    ...styles.bold,
+  },
+  tabs: {
+    flexDirection: "row",
+  },
+  tab: {
+    flex: 1,
+    alignItems: "center",
+    padding: spacing.sm,
+    backgroundColor: colors.lightGrey,
+    color: colors.coralOrange,
+  },
+  activeTab: {
+    backgroundColor: colors.orcaBlue,
+    color: colors.white,
+  },
+});
 
 export default App;

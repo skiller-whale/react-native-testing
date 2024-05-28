@@ -1,15 +1,12 @@
 import { ScrollView, StyleSheet, View } from "react-native";
-import type { Trip } from "../../../lib/dummyApi.ts";
 import { colors, spacing, styles } from "../../../lib/styles.ts";
 import { StyledText as Text } from "../../../lib/typography.tsx";
-import { calculateDrivingAssessment } from "../calculations.ts";
-import { DrivingLevelDisplay } from "../constants.ts";
+import { calculateDrivingAssessment } from "../calculations.js";
+import { DrivingLevelDisplay } from "../constants.js";
+import { useTripsContext } from "../TripsState.jsx";
 
-type Props = {
-  trips: Trip[];
-};
-
-const DrivingAssessment = ({ trips }: Props) => {
+const DrivingAssessment = () => {
+  const [trips] = useTripsContext();
   const {
     drivingScore,
     drivingLevel,
@@ -21,7 +18,12 @@ const DrivingAssessment = ({ trips }: Props) => {
 
   return (
     <ScrollView style={styles.container}>
-      <View role="heading" style={{ ...drivingAssessmentStyles.header, backgroundColor: color }}>
+      <View
+        accessible={true}
+        role="heading"
+        aria-level={2}
+        style={{ ...drivingAssessmentStyles.header, backgroundColor: color }}
+      >
         <Text>Driving Level:</Text>
         <Text>{drivingLevel}</Text>
       </View>
@@ -29,28 +31,48 @@ const DrivingAssessment = ({ trips }: Props) => {
         <Text>{summary}</Text>
         <View role="table" style={drivingAssessmentStyles.table}>
           <View role="row" style={drivingAssessmentStyles.tableRow}>
-            <Text role="rowheader" style={drivingAssessmentStyles.tableHeaderCell}>
+            <Text
+              role="rowheader"
+              style={drivingAssessmentStyles.tableHeaderCell}
+            >
               Total Trips
             </Text>
-            <Text role="cell" style={drivingAssessmentStyles.tableCell}>{tripsCount}</Text>
+            <Text role="cell" style={drivingAssessmentStyles.tableCell}>
+              {tripsCount}
+            </Text>
           </View>
           <View role="row" style={drivingAssessmentStyles.tableRow}>
-            <Text role="rowheader" style={drivingAssessmentStyles.tableHeaderCell}>
+            <Text
+              role="rowheader"
+              style={drivingAssessmentStyles.tableHeaderCell}
+            >
               Total Distance
             </Text>
-            <Text role="cell" style={drivingAssessmentStyles.tableCell}>{totalDistance} miles</Text>
+            <Text role="cell" style={drivingAssessmentStyles.tableCell}>
+              {totalDistance} miles
+            </Text>
           </View>
           <View role="row" style={drivingAssessmentStyles.tableRow}>
-            <Text role="rowheader" style={drivingAssessmentStyles.tableHeaderCell}>
+            <Text
+              role="rowheader"
+              style={drivingAssessmentStyles.tableHeaderCell}
+            >
               Number of Incidents
             </Text>
-            <Text role="cell" style={drivingAssessmentStyles.tableCell}>{incidentsCount}</Text>
+            <Text role="cell" style={drivingAssessmentStyles.tableCell}>
+              {incidentsCount}
+            </Text>
           </View>
           <View role="row" style={drivingAssessmentStyles.tableRow}>
-            <Text role="rowheader" style={drivingAssessmentStyles.tableHeaderCell}>
+            <Text
+              role="rowheader"
+              style={drivingAssessmentStyles.tableHeaderCell}
+            >
               Score
             </Text>
-            <Text role="cell" style={drivingAssessmentStyles.tableCell}>{drivingScore}</Text>
+            <Text role="cell" style={drivingAssessmentStyles.tableCell}>
+              {drivingScore}
+            </Text>
           </View>
         </View>
       </View>
@@ -77,7 +99,7 @@ const drivingAssessmentStyles = StyleSheet.create({
   tableHeaderCell: {
     flex: 1,
     padding: spacing.sm,
-    fontWeight: "600",
+    ...styles.bold,
   },
   tableCell: {
     flex: 1,

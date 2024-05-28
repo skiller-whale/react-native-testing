@@ -20,7 +20,8 @@ import {
   storedStateKey,
   updateAndStore,
 } from "./src_app/State.tsx";
-import type { ModuleStackParamList } from "./src_app/types.ts";
+import type { ModuleStackParamList } from "./src_app/routes.ts";
+import fetch from "./lib/dummyApi.ts";
 
 // JS modules
 import AsynchronousTestsJS from "./src_js/asynchronous_tests/App.jsx";
@@ -35,6 +36,7 @@ import EndToEndTestsTS from "./src_ts/end_to_end_tests/App.tsx";
 import InteractivityTS from "./src_ts/interactivity/App.tsx";
 import IntroductionTS from "./src_ts/introduction/App.tsx";
 import MockingTS from "./src_ts/mocking/App.tsx";
+import type { Trip } from "./lib/dummyApi.ts";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -42,8 +44,19 @@ const Stack = createNativeStackNavigator<ModuleStackParamList>();
 
 const App = () => {
   const [isReady, setIsReady] = useState(false);
-
   const [state, dispatch] = useReducer(updateAndStore, initialState);
+  const [trips, setTrips] = useState<Trip[]>([]);
+  useAsyncEffect(async () => {
+    const storedState = await AsyncStorage.getItem(storedStateKey);
+    if (storedState) {
+      dispatch({ type: "set-state", state: JSON.parse(storedState) });
+    }
+    const response = await fetch("https://dummyapi.skillerwhale/trips");
+    const { data: trips } = await response.json();
+    setTrips(trips);
+    setIsReady(true);
+    await SplashScreen.hideAsync();
+  }, []);
 
   const [fontsLoaded] = useFonts({
     Exo: require("./assets/fonts/Exo2.ttf"),
@@ -51,15 +64,6 @@ const App = () => {
     Alegreya: require("./assets/fonts/Alegreya.ttf"),
     "Alegreya-Italic": require("./assets/fonts/Alegreya-Italic.ttf"),
   });
-
-  useAsyncEffect(async () => {
-    const storedState = await AsyncStorage.getItem(storedStateKey);
-    if (storedState) {
-      dispatch({ type: "set-state", state: JSON.parse(storedState) });
-    }
-    setIsReady(true);
-    await SplashScreen.hideAsync();
-  }, []);
 
   return isReady && fontsLoaded ? (
     <StateContext.Provider value={state}>
@@ -109,16 +113,56 @@ const App = () => {
                 headerTitle: () => <Text size="lg">React Native Coaching</Text>,
               }}
             />
-            <Stack.Screen name="/js/introduction" component={IntroductionJS} />
-            <Stack.Screen name="/js/interactivity" component={InteractivityJS} />
-            <Stack.Screen name="/js/asynchronous_tests" component={AsynchronousTestsJS} />
-            <Stack.Screen name="/js/mocking" component={MockingJS} />
-            <Stack.Screen name="/js/end_to_end_tests" component={EndToEndTestsJS} />
-            <Stack.Screen name="/ts/introduction" component={IntroductionTS} />
-            <Stack.Screen name="/ts/interactivity" component={InteractivityTS} />
-            <Stack.Screen name="/ts/asynchronous_tests" component={AsynchronousTestsTS} />
-            <Stack.Screen name="/ts/mocking" component={MockingTS} />
-            <Stack.Screen name="/ts/end_to_end_tests" component={EndToEndTestsTS} />
+            <Stack.Screen
+              name="/js/introduction"
+              component={IntroductionJS}
+              initialParams={{ trips }}
+            />
+            <Stack.Screen
+              name="/js/interactivity"
+              component={InteractivityJS}
+              initialParams={{ trips }}
+            />
+            <Stack.Screen
+              name="/js/asynchronous_tests"
+              component={AsynchronousTestsJS}
+              initialParams={{ trips }}
+            />
+            <Stack.Screen
+              name="/js/mocking"
+              component={MockingJS}
+              initialParams={{ trips }}
+            />
+            <Stack.Screen
+              name="/js/end_to_end_tests"
+              component={EndToEndTestsJS}
+              initialParams={{ trips }}
+            />
+            <Stack.Screen
+              name="/ts/introduction"
+              component={IntroductionTS}
+              initialParams={{ trips }}
+            />
+            <Stack.Screen
+              name="/ts/interactivity"
+              component={InteractivityTS}
+              initialParams={{ trips }}
+            />
+            <Stack.Screen
+              name="/ts/asynchronous_tests"
+              component={AsynchronousTestsTS}
+              initialParams={{ trips }}
+            />
+            <Stack.Screen
+              name="/ts/mocking"
+              component={MockingTS}
+              initialParams={{ trips }}
+            />
+            <Stack.Screen
+              name="/ts/end_to_end_tests"
+              component={EndToEndTestsTS}
+              initialParams={{ trips }}
+            />
           </Stack.Navigator>
         </NavigationContainer>
       </DispatchContext.Provider>

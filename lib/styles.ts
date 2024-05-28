@@ -9,7 +9,7 @@ export const colors = {
   rayYellow: "#ffe380",
   lightGrey: "#f4f5f7",
   midGrey: "#9099b4",
-  transparentGrey: "rgba(10, 50, 100, 0.95)",
+  transparentGrey: "rgba(10, 50, 100, 0.6)",
   white: "#ffffff",
 } as const;
 
@@ -64,7 +64,7 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   bold: {
-    fontWeight: "600",
+    fontWeight: "700",
   },
   text: {
     fontFamily: fontFamilies.sans,
