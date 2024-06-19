@@ -17,7 +17,8 @@ const TestTripsProviders = ({ children }) => {
 };
 
 describe("DrivingHistory", () => {
-  jest.useFakeTimers();
+  beforeAll(() => jest.useFakeTimers());
+  afterAll(() => jest.useRealTimers());
 
   test.skip("selects trip when clicked", async () => {
     render(<DrivingHistory />, { wrapper: TestTripsProviders });

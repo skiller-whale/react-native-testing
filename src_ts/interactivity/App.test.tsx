@@ -1,5 +1,5 @@
 import { render, screen, userEvent } from "@testing-library/react-native";
-import type { Trip } from "../../lib/dummyApi.ts";
+import type { Trip } from "../../lib/trips.ts";
 import { mockModuleStackScreenProps } from "../../src_app/routes.ts";
 import App from "./App.tsx";
 
@@ -9,11 +9,13 @@ const testTrips: Trip[] = [
     date: "11th May 2023",
     distance: 10,
     incidents: 0,
+    confirmed: true,
   },
 ];
 
 describe("App", () => {
-  jest.useFakeTimers();
+  beforeAll(() => jest.useFakeTimers());
+  afterAll(() => jest.useRealTimers());
 
   test.skip("renders 'no trips available' for empty trips", () => {
     const props = mockModuleStackScreenProps("/ts/interactivity", {

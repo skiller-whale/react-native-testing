@@ -12,7 +12,7 @@ import { colors, fontSizes, spacing, styles } from "../../../lib/styles.ts";
 import { StyledText as Text } from "../../../lib/typography.tsx";
 import TripRow from "./TripRow.tsx";
 import { useTripsContext, useSetTripsContext } from "../TripsState.tsx";
-import { Trip } from "../../../lib/dummyApi.ts";
+import { Trip } from "../../../lib/trips.ts";
 
 const DrivingHistory = () => {
   const [trips, selectedTrip] = useTripsContext();

@@ -6,9 +6,8 @@ const useCursor = (initialItems) => {
 
   const selectedItem = items.find((item) => item.id === selectedId);
 
-  const selectItem = (idOrObject) => {
-    const id = typeof idOrObject === "string" ? idOrObject : idOrObject.id;
-    setSelectedId(id);
+  const selectItem = (item) => {
+    setSelectedId(item.id);
   };
 
   const updateSelectedItem = (newObject) => {

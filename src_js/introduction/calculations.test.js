@@ -44,4 +44,6 @@ describe("driving level calculations are correct", () => {
     { score: 29, expected: DrivingLevel.dangerous },
     { score: 0, expected: DrivingLevel.dangerous },
   ];
+
+  test.todo("driving score $score -> $expected");
 });

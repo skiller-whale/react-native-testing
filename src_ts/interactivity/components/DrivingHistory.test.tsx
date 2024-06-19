@@ -1,6 +1,6 @@
 import type { PropsWithChildren } from "react";
 import { render, screen, userEvent } from "@testing-library/react-native";
-import type { Trip } from "../../../lib/dummyApi.ts";
+import type { Trip } from "../../../lib/trips.ts";
 import TripsProvider, { SetTripsProvider } from "../TripsState.tsx";
 import useCursor from "../hooks/useCursor.ts";
 import DrivingHistory from "./DrivingHistory.tsx";
@@ -11,6 +11,7 @@ const testTrips: Trip[] = [
     date: "11th May 2023",
     distance: 10,
     incidents: 0,
+    confirmed: true,
   },
 ];
 
@@ -19,7 +20,8 @@ const TestTripsProviders = ({ children }: PropsWithChildren) => {
 };
 
 describe("DrivingHistory", () => {
-  jest.useFakeTimers();
+  beforeAll(() => jest.useFakeTimers());
+  afterAll(() => jest.useRealTimers());
 
   test.skip("selects trip when clicked", async () => {
     render(<DrivingHistory />, { wrapper: TestTripsProviders });

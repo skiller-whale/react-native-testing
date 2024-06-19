@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { Pressable, ScrollView, StyleSheet, View } from "react-native";
+import {
+  KeyboardAvoidingView,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  View,
+} from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { colors, fontSizes, spacing, styles } from "../../lib/styles.ts";
 import { StyledText as Text } from "../../lib/typography.tsx";
@@ -19,7 +25,7 @@ const App = ({ route }: ModuleStackScreenProps<"/ts/interactivity">) => {
   return (
     <TripsProvider value={[trips, selectedTrip]}>
       <SetTripsProvider value={[selectTrip, updateSelectedTrip]}>
-        <View style={styles.container}>
+        <KeyboardAvoidingView style={styles.container}>
           <Text role="heading" aria-level={1} style={appStyles.headerTitle}>
             {tab === "assessment" ? "Overall Assessment" : "Your Trips"}
           </Text>
@@ -55,7 +61,7 @@ const App = ({ route }: ModuleStackScreenProps<"/ts/interactivity">) => {
               />
             </Pressable>
           </View>
-        </View>
+        </KeyboardAvoidingView>
       </SetTripsProvider>
     </TripsProvider>
   );

@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react";
 import type useCursor from "./hooks/useCursor";
-import type { Trip } from "../../lib/dummyApi.ts";
+import type { Trip } from "../../lib/trips.ts";
 
 type Cursor = ReturnType<typeof useCursor<Trip>>;
 

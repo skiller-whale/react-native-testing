@@ -1,5 +1,5 @@
 import type { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
-import type { Trip } from "../../lib/dummyApi.ts";
+import type { Trip } from "../../lib/trips.ts";
 
 export const BaseTabID = "BaseTab";
 

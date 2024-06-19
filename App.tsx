@@ -21,7 +21,8 @@ import {
   updateAndStore,
 } from "./src_app/State.tsx";
 import type { ModuleStackParamList } from "./src_app/routes.ts";
-import fetch from "./lib/dummyApi.ts";
+import { server } from "./lib/dummyServer.ts";
+import type { Trip } from "./lib/trips.ts";
 
 // JS modules
 import AsynchronousTestsJS from "./src_js/asynchronous_tests/App.jsx";
@@ -36,7 +37,8 @@ import EndToEndTestsTS from "./src_ts/end_to_end_tests/App.tsx";
 import InteractivityTS from "./src_ts/interactivity/App.tsx";
 import IntroductionTS from "./src_ts/introduction/App.tsx";
 import MockingTS from "./src_ts/mocking/App.tsx";
-import type { Trip } from "./lib/dummyApi.ts";
+
+server.listen();
 
 SplashScreen.preventAutoHideAsync();
 
@@ -52,7 +54,7 @@ const App = () => {
       dispatch({ type: "set-state", state: JSON.parse(storedState) });
     }
     const response = await fetch("https://dummyapi.skillerwhale/trips");
-    const { data: trips } = await response.json();
+    const { trips } = await response.json();
     setTrips(trips);
     setIsReady(true);
     await SplashScreen.hideAsync();

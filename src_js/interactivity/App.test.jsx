@@ -12,7 +12,8 @@ const testTrips = [
 ];
 
 describe("App", () => {
-  jest.useFakeTimers();
+  beforeAll(() => jest.useFakeTimers());
+  afterAll(() => jest.useRealTimers());
 
   test.skip("renders 'no trips available' for empty trips", () => {
     const props = mockModuleStackScreenProps("/ts/interactivity", {

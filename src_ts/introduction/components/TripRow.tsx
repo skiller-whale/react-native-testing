@@ -1,5 +1,5 @@
 import { View, type ListRenderItemInfo } from "react-native";
-import type { Trip } from "../../../lib/dummyApi.ts";
+import type { Trip } from "../../../lib/trips.ts";
 import { styles } from "../../../lib/styles.ts";
 import { StyledText as Text } from "../../../lib/typography.tsx";
 import {

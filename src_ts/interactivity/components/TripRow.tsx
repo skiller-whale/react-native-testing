@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, View } from "react-native";
-import type { Trip } from "../../../lib/dummyApi.ts";
-import { colors, spacing, styles } from "../../../lib/styles.ts";
+import type { Trip } from "../../../lib/trips.ts";
+import { colors, styles } from "../../../lib/styles.ts";
 import { StyledText as Text } from "../../../lib/typography.tsx";
 import {
   calculateDrivingLevel,

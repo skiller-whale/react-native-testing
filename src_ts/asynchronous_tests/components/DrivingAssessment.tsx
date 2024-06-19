@@ -1,15 +1,12 @@
-import { ScrollView, StyleSheet, View } from "react-native";
-import type { Trip } from "../../../lib/trips.ts";
-import { colors, spacing, styles } from "../../../lib/styles.ts";
+import { ActivityIndicator, ScrollView, StyleSheet, View } from "react-native";
+import { colors, fontSizes, spacing, styles } from "../../../lib/styles.ts";
 import { StyledText as Text } from "../../../lib/typography.tsx";
+import { useTripsContext } from "../TripsState.tsx";
 import { calculateDrivingAssessment } from "../calculations.ts";
 import { DrivingLevelDisplay } from "../constants.ts";
 
-type Props = {
-  trips: Trip[];
-};
-
-const DrivingAssessment = ({ trips }: Props) => {
+const DrivingAssessment = () => {
+  const [loadingTrips, trips] = useTripsContext();
   const {
     drivingScore,
     drivingLevel,
@@ -19,9 +16,17 @@ const DrivingAssessment = ({ trips }: Props) => {
   } = calculateDrivingAssessment(trips);
   const { summary, color } = DrivingLevelDisplay[drivingLevel];
 
-  return (
+  return loadingTrips ? (
+    <View style={[styles.container, drivingAssessmentStyles.container]}>
+      <ActivityIndicator size={fontSizes.lg} color={colors.oceanBlue} />
+      <Text>Loading...</Text>
+    </View>
+  ) : (
     <ScrollView style={styles.container}>
-      <View role="heading" style={{ ...drivingAssessmentStyles.header, backgroundColor: color }}>
+      <View
+        role="heading"
+        style={{ ...drivingAssessmentStyles.header, backgroundColor: color }}
+      >
         <Text>Driving Level:</Text>
         <Text>{drivingLevel}</Text>
       </View>
@@ -29,28 +34,48 @@ const DrivingAssessment = ({ trips }: Props) => {
         <Text>{summary}</Text>
         <View role="table" style={drivingAssessmentStyles.table}>
           <View role="row" style={drivingAssessmentStyles.tableRow}>
-            <Text role="rowheader" style={drivingAssessmentStyles.tableHeaderCell}>
+            <Text
+              role="rowheader"
+              style={drivingAssessmentStyles.tableHeaderCell}
+            >
               Total Trips
             </Text>
-            <Text role="cell" style={drivingAssessmentStyles.tableCell}>{tripsCount}</Text>
+            <Text role="cell" style={drivingAssessmentStyles.tableCell}>
+              {tripsCount}
+            </Text>
           </View>
           <View role="row" style={drivingAssessmentStyles.tableRow}>
-            <Text role="rowheader" style={drivingAssessmentStyles.tableHeaderCell}>
+            <Text
+              role="rowheader"
+              style={drivingAssessmentStyles.tableHeaderCell}
+            >
               Total Distance
             </Text>
-            <Text role="cell" style={drivingAssessmentStyles.tableCell}>{totalDistance} miles</Text>
+            <Text role="cell" style={drivingAssessmentStyles.tableCell}>
+              {totalDistance} miles
+            </Text>
           </View>
           <View role="row" style={drivingAssessmentStyles.tableRow}>
-            <Text role="rowheader" style={drivingAssessmentStyles.tableHeaderCell}>
+            <Text
+              role="rowheader"
+              style={drivingAssessmentStyles.tableHeaderCell}
+            >
               Number of Incidents
             </Text>
-            <Text role="cell" style={drivingAssessmentStyles.tableCell}>{incidentsCount}</Text>
+            <Text role="cell" style={drivingAssessmentStyles.tableCell}>
+              {incidentsCount}
+            </Text>
           </View>
           <View role="row" style={drivingAssessmentStyles.tableRow}>
-            <Text role="rowheader" style={drivingAssessmentStyles.tableHeaderCell}>
+            <Text
+              role="rowheader"
+              style={drivingAssessmentStyles.tableHeaderCell}
+            >
               Score
             </Text>
-            <Text role="cell" style={drivingAssessmentStyles.tableCell}>{drivingScore}</Text>
+            <Text role="cell" style={drivingAssessmentStyles.tableCell}>
+              {drivingScore}
+            </Text>
           </View>
         </View>
       </View>
@@ -59,6 +84,11 @@ const DrivingAssessment = ({ trips }: Props) => {
 };
 
 const drivingAssessmentStyles = StyleSheet.create({
+  container: {
+    padding: spacing.md,
+    gap: spacing.md,
+    alignItems: "center",
+  },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
