@@ -1,4 +1,3 @@
-import { useState, type PropsWithChildren } from "react";
 import {
   render,
   screen,
@@ -6,9 +5,7 @@ import {
   waitFor,
 } from "@testing-library/react-native";
 import type { Trip } from "../../../lib/trips.ts";
-import mockApi from "../mocks/mockApi.ts";
-import ApiProvider from "../context/ApiContext.tsx";
-import TripsProvider, { SetTripsProvider } from "../context/TripsContext.tsx";
+import MockTripsProviders from "../mocks/MockTripsProviders.tsx";
 import DrivingHistory from "./DrivingHistory.tsx";
 
 const testTrips: Trip[] = [
@@ -21,16 +18,6 @@ const testTrips: Trip[] = [
   },
 ];
 
-const TestTripsProviders = ({ children }: PropsWithChildren) => {
-  const [trips, setTrips] = useState(testTrips);
-
-  return (
-    <TripsProvider value={trips}>
-      <SetTripsProvider value={setTrips}>{children}</SetTripsProvider>
-    </TripsProvider>
-  );
-};
-
 describe("DrivingHistory", () => {
   beforeAll(() => jest.useFakeTimers());
   afterEach(() => jest.runOnlyPendingTimers());
@@ -38,7 +25,7 @@ describe("DrivingHistory", () => {
 
   test.skip("confirm button works", async () => {
     const user = userEvent.setup();
-    render(<DrivingHistory />, { wrapper: TestTripsProviders });
+    render(<DrivingHistory />, { wrapper: MockTripsProviders(testTrips) });
 
     const confirmTripButton = screen.getByRole("button", {
       name: "Confirm trip trip-1",
