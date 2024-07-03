@@ -49,7 +49,7 @@ describe.skip("API helper functions", () => {
   test("confirming all unconfirmed trips works", async () => {
     const trips = await fetchTrips();
     const unconfirmedTrips = trips.filter((trip) => !trip.confirmed);
-    expect.assertions(unconfirmedTrips.length);
+    expect.assertions(testTrips.filter((trip) => !trip.confirmed).length);
     for (const trip of unconfirmedTrips) {
       const updatedTrip = await confirmTrip(trip.id);
       expect(updatedTrip).toEqual({ ...trip, confirmed: true });

@@ -1,6 +1,6 @@
 import { delay } from "msw";
 import type { Trip } from "../../../lib/trips.ts";
-import { Dispatch, SetStateAction } from "react";
+import type { Dispatch, SetStateAction } from "react";
 
 export default (trips: Trip[], setTrips: Dispatch<SetStateAction<Trip[]>>) => ({
   fetchTrips: jest.fn(async () => {

@@ -1,6 +1,6 @@
 import { useState, type PropsWithChildren } from "react";
 import type { Trip } from "../../../lib/trips.ts";
-import mockApi from "../mocks/mockApi.ts";
+import mockApi from "./mockApi.ts";
 import ApiProvider from "../context/ApiContext.tsx";
 import TripsProvider, { SetTripsProvider } from "../context/TripsContext.tsx";
 
