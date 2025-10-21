@@ -24,6 +24,7 @@ const DrivingAssessment = () => {
   ) : (
     <ScrollView style={styles.container}>
       <View
+        accessible
         role="heading"
         style={{ ...drivingAssessmentStyles.header, backgroundColor: color }}
       >

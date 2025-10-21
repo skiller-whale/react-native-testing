@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Pressable, ScrollView, StyleSheet, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { colors, fontSizes, spacing, styles } from "../../lib/styles.ts";
 import { StyledText as Text } from "../../lib/typography.tsx";
@@ -10,9 +11,10 @@ const App = ({ route }) => {
   const { trips } = route.params;
 
   const [tab, setTab] = useState("assessment");
+  const { bottom } = useSafeAreaInsets();
 
   return (
-    <View style={styles.container}>
+    <View style={{ ...styles.container, paddingBottom: bottom }}>
       <Text role="heading" aria-level={1} style={appStyles.headerTitle}>
         {tab === "assessment" ? "Overall Assessment" : "Your Trips"}
       </Text>

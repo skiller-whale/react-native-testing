@@ -27,6 +27,7 @@ const DrivingHistory = ({ trips }) => (
       )}
       data={trips}
       renderItem={TripRow}
+      scrollEnabled={false}
     />
   </View>
 );
